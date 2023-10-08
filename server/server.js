@@ -21,5 +21,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.use(cookieParser());
 
+// routes
+app.use('/');
+app.use('/auth/');
+app.use('/profile');
+app.use('/settings');
+app.use('/post');
+app.use('/react');
+app.use('/comment');
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
