@@ -9,3 +9,95 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum Type {
+  USER
+  ADMIN
+}
+
+model User {
+  // Fields
+  userID    String   @id @default(uuid())
+  name      String   @db.VarChar(50)
+  username  String   @unique @db.VarChar(50)
+  email     String   @unique @db.VarChar(60)
+  password  String
+  about     String?
+  location  String?
+  userURL   String?
+  avatarURL String?
+  bannerURL String?
+  userType  Type     @default(USER)
+  varified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  sortID    Int      @default(autoincrement())
+
+  // Relationships
+  followers Follow[]   @relation("Follower")
+  following Follow[]   @relation("Following")
+  posts     Post[]     @relation("Post")
+  comments  Comment[]  @relation("Comment")
+  reactions Reaction[] @relation("Reaction")
+
+  // Constraints
+  @@unique([username, email])
+}
+
+model Follow {
+  id          Int    @id @default(autoincrement())
+  followerID  String
+  followingID String
+
+  // Relationships
+  follower  User @relation("Follower", fields: [followerID], references: [userID])
+  following User @relation("Following", fields: [followingID], references: [userID])
+
+  // Constraints
+  @@unique([followerID, followingID])
+}
+
+model Post {
+  postID    String   @id @default(uuid())
+  content   String
+  postURL   String
+  createdAt DateTime @default(now())
+  userID    String
+
+  // Relationships
+  user      User       @relation("Post", fields: [userID], references: [userID])
+  comments  Comment[]  @relation("Comment")
+  reactions Reaction[] @relation("Reaction")
+
+  // Constraints
+  @@unique([userID, postURL, postID])
+}
+
+model Comment {
+  commentID String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+  userID    String
+  postID    String
+
+  // Relationships
+  user User @relation("Comment", fields: [userID], references: [userID])
+  post Post @relation("Comment", fields: [postID], references: [postID])
+
+  // Constraints
+  @@unique([userID, postID])
+}
+
+model Reaction {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  userID    String
+  postID    String
+
+  // Relationships
+  user User @relation("Reaction", fields: [userID], references: [userID])
+  post Post @relation("Reaction", fields: [postID], references: [postID])
+
+  // Constraints
+  @@unique([userID, postID])
+}
