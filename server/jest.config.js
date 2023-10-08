@@ -4,6 +4,7 @@ export default {
   transform: {
     '^.+\\.js$': 'babel-jest',
   },
+  setupFiles: ['dotenv/config'],
   moduleFileExtensions: ['js', 'json', 'node'],
   testPathIgnorePatterns: [
     '/node_modules/', // Ignore the node_modules directory
