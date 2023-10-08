@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import {
   hashPassword,
   comparePassword,
-} from '../../src/utils/passwordOpertations.js'; // Replace with the actual path to your authentication module
+} from '../../src/utils/passwordOpertations.js';
 
 describe('Authentication Functions', () => {
   describe('hashPassword', () => {
