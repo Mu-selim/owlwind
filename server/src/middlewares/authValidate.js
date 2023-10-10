@@ -27,3 +27,21 @@ export const registerValidate = (req, res, next) => {
   }
   next();
 };
+
+export const loginValidate = (req, res, next) => {
+  const { user, password } = req.body;
+  const errors = {};
+
+  if (isEmpty(user)) errors.user = 'username or email cannot be empty';
+  if (isEmpty(password)) errors.password = 'password cannot be empty';
+
+  if (Object.keys(errors).length > 0) {
+    const error = {
+      status: 'failed',
+      message: 'input validation failed, please check your inputs',
+      errors,
+    };
+    return res.status(400).json(error);
+  }
+  next();
+};
