@@ -46,7 +46,7 @@ npm run prisma-deploy
 npm install
 ```
 
-6 . Start the server
+6. Start the server
 
 ```bash
 npm run dev
