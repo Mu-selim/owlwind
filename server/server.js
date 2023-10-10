@@ -25,16 +25,16 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
-app.use(cookieParser());
+app.use(cookieParser(process.env.COOKIE_SECRET));
 
 // routes
 app.use('/', rootRouter);
 app.use('/auth/', authRouter);
 app.use('/profile', profileRouter);
 app.use('/settings', settingsRouter);
-app.use('/post');
-app.use('/react');
-app.use('/comment');
+// app.use('/post');
+// app.use('/react');
+// app.use('/comment');
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
