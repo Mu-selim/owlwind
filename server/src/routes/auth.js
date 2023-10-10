@@ -7,4 +7,4 @@ export const authRouter = Router();
 authRouter.post('/register', isAuthenticated, registerValidate, postRegister);
 authRouter.post('/login', isAuthenticated, loginValidate, postLogin);
 authRouter.post('/logout', isAuthenticated, postLogout);
-authRouter.get('/verify');
+authRouter.post('/verify');
