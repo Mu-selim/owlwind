@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 const createUser = async (data) => {
   const createdUser = await prisma.user.create({ data });
   if (!createdUser) throw new Error('sorry, something went wrong :(');
-  const { password, createdAt, updatedAt, sortID, ...user } = createdUser;
+  const { password, updatedAt, sortID, ...user } = createdUser;
   return user;
 };
 
@@ -93,21 +93,11 @@ const getPostsFromFollowedUsers = async (userID) => {
   const posts = await prisma.post.findMany({
     where: {
       user: {
-        followers: {
-          some: {
-            followerID: userID,
-          },
-        },
+        followers: { some: { followerID: userID } },
       },
     },
-    include: {
-      user: true,
-      comments: true,
-      reactions: true,
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
+    include: { user: true, comments: true, reactions: true },
+    orderBy: { createdAt: 'desc' },
   });
   return posts;
 };
@@ -140,7 +130,7 @@ export const postLogin = async (req, res) => {
     res.cookie('userID', data.userID, cookieOptions);
 
     // Send response
-    const { password, createdAt, updatedAt, sortID, ...user } = data;
+    const { password, updatedAt, sortID, ...user } = data;
     const response = {
       status: 'success',
       message: 'user logged in successfully',
