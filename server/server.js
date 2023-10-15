@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import { rootRouter } from './src/routes/root.js';
 import { authRouter } from './src/routes/auth.js';
 import { profileRouter } from './src/routes/profile.js';
+import { postRouter } from './src/routes/post.js';
 import { settingsRouter } from './src/routes/settings.js';
 
 const app = express();
@@ -32,7 +33,7 @@ app.use('/', rootRouter);
 app.use('/auth/', authRouter);
 app.use('/profile', profileRouter);
 app.use('/settings', settingsRouter);
-// app.use('/post');
+app.use('/post', postRouter);
 // app.use('/react');
 // app.use('/comment');
 
