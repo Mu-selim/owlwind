@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 const createUser = async (data) => {
   const createdUser = await prisma.user.create({ data });
   if (!createdUser) throw new Error('sorry, something went wrong :(');
-  const { password, createdAt, updatedAt, sortID, ...user } = createdUser;
+  const { password, updatedAt, sortID, ...user } = createdUser;
   return user;
 };
 
@@ -63,6 +63,8 @@ export const postRegister = async (req, res) => {
       error.errors = { fields: err.meta.target };
     }
     res.status(400).json(error);
+  } finally {
+    await prisma.$disconnect();
   }
 };
 
@@ -90,26 +92,27 @@ const checkPassword = async (password, hashedPassword, userInput) => {
 };
 
 const getPostsFromFollowedUsers = async (userID) => {
-  const posts = await prisma.post.findMany({
-    where: {
-      user: {
-        followers: {
-          some: {
-            followerID: userID,
-          },
-        },
-      },
-    },
-    include: {
-      user: true,
-      comments: true,
-      reactions: true,
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
+  // Find all users that the current user is following
+  const followedUsers = await prisma.follow.findMany({
+    where: { followerID: userID },
+    select: { followingID: true },
   });
-  return posts;
+
+  // Extract the IDs of the followed users
+  const followedUserIDs = followedUsers.map((follow) => follow.followingID);
+
+  // Find posts of the followed users and sort them by createdAt in descending order
+  const postsOfFollowedUsers = await prisma.post.findMany({
+    where: { userID: { in: followedUserIDs } },
+    include: {
+      reactions: true,
+      comments: true,
+      user: { select: { name: true, username: true, avatarURL: true } },
+    },
+    orderBy: { createdAt: 'desc' },
+  });
+
+  return postsOfFollowedUsers;
 };
 
 export const postLogin = async (req, res) => {
@@ -140,7 +143,7 @@ export const postLogin = async (req, res) => {
     res.cookie('userID', data.userID, cookieOptions);
 
     // Send response
-    const { password, createdAt, updatedAt, sortID, ...user } = data;
+    const { password, updatedAt, sortID, ...user } = data;
     const response = {
       status: 'success',
       message: 'user logged in successfully',
@@ -157,6 +160,8 @@ export const postLogin = async (req, res) => {
       errors: {},
     };
     res.status(400).json(error);
+  } finally {
+    await prisma.$disconnect();
   }
 };
 
