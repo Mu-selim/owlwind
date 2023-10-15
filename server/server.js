@@ -9,6 +9,7 @@ import { authRouter } from './src/routes/auth.js';
 import { profileRouter } from './src/routes/profile.js';
 import { postRouter } from './src/routes/post.js';
 import { settingsRouter } from './src/routes/settings.js';
+import { reactionRouter } from './src/routes/reaction.js';
 
 const app = express();
 dotenv.config();
@@ -34,7 +35,7 @@ app.use('/auth/', authRouter);
 app.use('/profile', profileRouter);
 app.use('/post', postRouter);
 app.use('/settings', settingsRouter);
-// app.use('/react');
+app.use('/react', reactionRouter);
 // app.use('/comment');
 
 const PORT = process.env.PORT || 3000;
