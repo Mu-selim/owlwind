@@ -92,16 +92,27 @@ const checkPassword = async (password, hashedPassword, userInput) => {
 };
 
 const getPostsFromFollowedUsers = async (userID) => {
-  const posts = await prisma.post.findMany({
-    where: {
-      user: {
-        followers: { some: { followerID: userID } },
-      },
+  // Find all users that the current user is following
+  const followedUsers = await prisma.follow.findMany({
+    where: { followerID: userID },
+    select: { followingID: true },
+  });
+
+  // Extract the IDs of the followed users
+  const followedUserIDs = followedUsers.map((follow) => follow.followingID);
+
+  // Find posts of the followed users and sort them by createdAt in descending order
+  const postsOfFollowedUsers = await prisma.post.findMany({
+    where: { userID: { in: followedUserIDs } },
+    include: {
+      reactions: true,
+      comments: true,
+      user: { select: { name: true, username: true, avatarURL: true } },
     },
-    include: { user: true, comments: true, reactions: true },
     orderBy: { createdAt: 'desc' },
   });
-  return posts;
+
+  return postsOfFollowedUsers;
 };
 
 export const postLogin = async (req, res) => {
