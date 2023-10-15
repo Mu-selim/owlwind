@@ -7,6 +7,7 @@ import {
   putProfilePicture,
 } from '../controllers/profile/profileInfo.js';
 import { userInfoValidate } from '../middlewares/infoValidate.js';
+import { followUser, unfollowUser } from '../controllers/profile/profileFollowUnfollow.js';
 
 export const profileRouter = Router();
 
@@ -14,8 +15,8 @@ export const profileRouter = Router();
 profileRouter.get('/:username', getProfile);
 
 // TODO: Add routes for following and unfollowing a user
-profileRouter.post('/:username/follow');
-profileRouter.delete('/:username/follow');
+profileRouter.post('/:username/follow', isAuthenticated, followUser);
+profileRouter.delete('/:username/follow', isAuthenticated, unfollowUser);
 
 // TODO: Add route for editing a user's profile information, profile picture, banner, etc.
 profileRouter.put('/:username/info', isAuthenticated, userInfoValidate, putProfileInfo);
