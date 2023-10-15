@@ -63,6 +63,8 @@ export const postRegister = async (req, res) => {
       error.errors = { fields: err.meta.target };
     }
     res.status(400).json(error);
+  } finally {
+    await prisma.$disconnect();
   }
 };
 
@@ -147,6 +149,8 @@ export const postLogin = async (req, res) => {
       errors: {},
     };
     res.status(400).json(error);
+  } finally {
+    await prisma.$disconnect();
   }
 };
 

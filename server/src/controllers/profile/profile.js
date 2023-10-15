@@ -35,5 +35,7 @@ export const getProfile = async (req, res) => {
       errors: {},
     };
     res.status(404).json(error);
+  } finally {
+    await prisma.$disconnect();
   }
 };

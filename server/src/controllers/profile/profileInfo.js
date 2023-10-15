@@ -45,6 +45,8 @@ export const putProfileInfo = async (req, res) => {
       errors: {},
     };
     return res.status(400).json(error);
+  } finally {
+    await prisma.$disconnect();
   }
 };
 
@@ -99,6 +101,8 @@ export const putProfilePicture = async (req, res) => {
       errors: {},
     };
     res.status(400).json(error);
+  } finally {
+    await prisma.$disconnect();
   }
 };
 
@@ -142,5 +146,7 @@ export const putProfileBanner = async (req, res) => {
       errors: {},
     };
     res.status(400).json(error);
+  } finally {
+    await prisma.$disconnect();
   }
 };

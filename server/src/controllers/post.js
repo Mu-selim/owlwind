@@ -43,6 +43,8 @@ export const createPost = async (req, res) => {
     });
   } catch (err) {
     res.status(400).json(errorHandler(err));
+  } finally {
+    await prisma.$disconnect();
   }
 };
 
@@ -75,6 +77,8 @@ export const getPost = async (req, res) => {
     });
   } catch (err) {
     res.status(404).json(errorHandler(err));
+  } finally {
+    await prisma.$disconnect();
   }
 };
 
@@ -101,5 +105,7 @@ export const deletePost = async (req, res) => {
     });
   } catch (err) {
     res.status(400).json(errorHandler(err));
+  } finally {
+    await prisma.$disconnect();
   }
 };

@@ -7,7 +7,7 @@ export const getUserByUsername = async (username) => {
     where: { username },
   });
 
-  if (!user) return null;
+  if (!user) throw new Error('sorry, user not found :(');
   const { password, updatedAt, sortID, ...returnedUser } = user;
   return returnedUser;
 };
