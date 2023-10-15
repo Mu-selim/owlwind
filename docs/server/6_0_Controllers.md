@@ -5,3 +5,4 @@ Controllers are the glue between the routes and the models. They are responsible
 ### Application Controllers
 
 - [`auth`](6_1_Controllers_Auth.md) - authentication controller which handles user registration, login, logout, and account verification.
+- [`profile`](./6_2_Controllers_Profile.md) - profile controller which handles user profile routes such as viewing and updating user profile information.

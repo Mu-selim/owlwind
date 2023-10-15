@@ -20,11 +20,13 @@ The Express Router() is used to create a modular mountable router.
 
 **POST /:username/follow**
 
-- Will handle following a user (not yet implemented).
+- Checks if user is authenticated using `isAuthenticated` middleware.
+- Calls `followUser` to follow a user.
 
 **DELETE /:username/follow**
 
-- Will handle unfollowing a user (not yet implemented).
+- Checks if user is authenticated using `isAuthenticated` middleware.
+- Calls `unfollowUser` to unfollow a user.
 
 **PUT /:username/info**
 
