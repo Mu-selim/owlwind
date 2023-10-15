@@ -32,8 +32,8 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use('/', rootRouter);
 app.use('/auth/', authRouter);
 app.use('/profile', profileRouter);
-app.use('/settings', settingsRouter);
 app.use('/post', postRouter);
+app.use('/settings', settingsRouter);
 // app.use('/react');
 // app.use('/comment');
 
