@@ -52,9 +52,6 @@ model Follow {
   // Relationships
   follower  User @relation("Follower", fields: [followerID], references: [userID])
   following User @relation("Following", fields: [followingID], references: [userID])
-
-  // Constraints
-  @@unique([followerID, followingID])
 }
 
 model Post {
@@ -67,9 +64,6 @@ model Post {
   user      User       @relation("Post", fields: [userID], references: [userID])
   comments  Comment[]  @relation("Comment")
   reactions Reaction[] @relation("Reaction")
-
-  // Constraints
-  @@unique([userID, postID])
 }
 
 model Comment {
@@ -82,9 +76,6 @@ model Comment {
   // Relationships
   user User @relation("Comment", fields: [userID], references: [userID])
   post Post @relation("Comment", fields: [postID], references: [postID])
-
-  // Constraints
-  @@unique([userID, postID])
 }
 
 model Reaction {
@@ -96,7 +87,4 @@ model Reaction {
   // Relationships
   user User @relation("Reaction", fields: [userID], references: [userID])
   post Post @relation("Reaction", fields: [postID], references: [postID])
-
-  // Constraints
-  @@unique([userID, postID])
 }

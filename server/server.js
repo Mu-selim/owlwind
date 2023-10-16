@@ -10,6 +10,7 @@ import { profileRouter } from './src/routes/profile.js';
 import { postRouter } from './src/routes/post.js';
 import { settingsRouter } from './src/routes/settings.js';
 import { reactionRouter } from './src/routes/reaction.js';
+import { commentsRouter } from './src/routes/comments.js';
 
 const app = express();
 dotenv.config();
@@ -36,7 +37,7 @@ app.use('/profile', profileRouter);
 app.use('/post', postRouter);
 app.use('/settings', settingsRouter);
 app.use('/react', reactionRouter);
-// app.use('/comment');
+app.use('/comment', commentsRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

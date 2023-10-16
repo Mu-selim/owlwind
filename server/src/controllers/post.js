@@ -28,7 +28,6 @@ export const createPost = async (req, res) => {
     const createdPost = await prisma.post.create({
       data: {
         content,
-        postURL: `${userID}/${Date.now()}`,
         user: { connect: { userID } },
       },
     });
